@@ -32,7 +32,7 @@ testCases() {
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
   # 设置绝对路径
-  dataPath=path=$(pwd)'/'$testDataFileName
+  dataPath=$(pwd)'/'$testDataFileName
   dd if=/dev/urandom of=$dataPath bs=10240 count=1024
   # 2、生成CAR文件(测试环境需要安装car命令行程序)
   carDataPath=$(echo ${dataPath/.dat/.car})
@@ -57,6 +57,10 @@ testCases() {
   # 3、数据清理
   rm -rf $dataPath
   rm -rf $carDataPath
+
+  # 导入car文件测试数据清理
+  $cmdPath rb cs://$bucketName --force
+  #  rm -rf $testDataFileName
   echo "_/_/_/_/_/_/_/_/_/_/_/_/_/ 导入car文件 结束 _/_/_/_/_/_/_/_/_/_/_/_/_/"
 
 }
