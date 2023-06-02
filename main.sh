@@ -96,7 +96,7 @@ testCases() {
   echo '2、添加对象'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   $cmdPath put $testDataFileName cs://$bucketName
   echo '此操作应给出错误提示'
   execCmdFail '桶操作' '移除桶' '正常删除-有数据删除' 'gcscmd rb cs://'$bucketName 'rb cs://'$bucketName ''
@@ -118,7 +118,7 @@ testCases() {
   echo '2、添加对象'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   $cmdPath put $testDataFileName cs://$bucketName
   execCmd '桶操作' '清空桶' '正常清空-有数据清空' 'gcscmd rm cs://'$bucketName 'rm cs://'$bucketName ''
   echo '桶操作 => 清空桶 => 正常清空-有数据清空 => gcscmd rm cs://bbb end'
@@ -157,7 +157,7 @@ testCases() {
   echo '2、添加对象'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   resp=$($cmdPath put $testDataFileName cs://$bucketName)
   echo '3、获取CID'
   cid=$(echo "$resp" | awk '/CID:/{print $2}')
@@ -190,7 +190,7 @@ testCases() {
   echo '2、添加对象，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   # 设置当前目录
   dataPath=''$testDataFileName
   execCmd '对象上传' '上传文件-当前目录' '在当前目录上传文件' 'gcscmd put '$dataPath' cs://'$bucketName 'put '$dataPath' cs://'$bucketName ''
@@ -206,7 +206,7 @@ testCases() {
   #echo $testDataFileName
   # 设置绝对路径
   dataPath=$(pwd)'/'$testDataFileName
-  dd if=/dev/urandom of=$dataPath bs=10240 count=1024
+  dd if=/dev/urandom of=$dataPath bs=1024 count=1
   execCmd '对象上传' '上传文件-当前目录' '绝对路径上传文件' 'gcscmd put '$dataPath' cs://'$bucketName 'put '$dataPath' cs://'$bucketName ''
   echo '2、数据清理'
   rm -rf $dataPath
@@ -220,7 +220,7 @@ testCases() {
   #echo $testDataFileName
   # 设置相对路径
   dataPath='tmp/'$testDataFileName
-  dd if=/dev/urandom of=$dataPath bs=10240 count=1024
+  dd if=/dev/urandom of=$dataPath bs=1024 count=1
   execCmd '对象上传' '上传文件-当前目录' '相对路径上传文件' 'gcscmd put '$dataPath' cs://'$bucketName 'put '$dataPath' cs://'$bucketName ''
   echo '2、数据清理'
   rm -rf $dataPath
@@ -234,7 +234,7 @@ testCases() {
   echo '2、添加对象，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   # 设置当前目录
   dataPath=''$testDataFileName
   execCmdFail '对象上传' '上传文件-当前目录' '错误上传-任意方式上传到不存在的桶' 'gcscmd put '$dataPath' cs://'$wrongBucketName 'put '$dataPath' cs://'$wrongBucketName ''
@@ -270,7 +270,7 @@ testCases() {
   #echo $testDataFileName
   # 设置相对路径
   dataPath=$testDataFolderame'/'$testDataFileName
-  dd if=/dev/urandom of=$dataPath bs=10240 count=1024
+  dd if=/dev/urandom of=$dataPath bs=1024 count=1
   execCmd '对象上传' '上传文件-当前目录' '正确上传目录-目录有文件上传' 'gcscmd put '$testDataFolderame' cs://'$bucketName 'put '$testDataFolderame' cs://'$bucketName ''
   echo '3、数据清理'
   rm -rf $testDataFolderame
@@ -282,7 +282,7 @@ testCases() {
   #  echo '1、添加对象，10MB'
   #  testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #  #echo $testDataFileName
-  #  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  #  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   #  # 2、生成CAR文件(测试环境需要安装car命令行程序)
   #  carFilename=$(echo ${testDataFileName/.dat/.car})
   #  car c --version 1 -f $carFilename $testDataFileName
@@ -311,7 +311,7 @@ testCases() {
   echo '2、添加对象，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   echo '3、生成CAR文件(测试环境需要安装car命令行程序)'
   carFilename=$(echo ${testDataFileName/.dat/.car})
   car c --version 1 -f $carFilename $testDataFileName
@@ -330,7 +330,7 @@ testCases() {
   #echo $testDataFileName
   # 设置绝对路径
   dataPath=$(pwd)'/'$testDataFileName
-  dd if=/dev/urandom of=$dataPath bs=10240 count=1024
+  dd if=/dev/urandom of=$dataPath bs=1024 count=1
   echo '2、生成CAR文件(测试环境需要安装car命令行程序)'
   carDataPath=$(echo ${dataPath/.dat/.car})
   car c --version 1 -f $carDataPath $dataPath
@@ -347,7 +347,7 @@ testCases() {
   #echo $testDataFileName
   # 设置相对路径
   dataPath='tmp/'$testDataFileName
-  dd if=/dev/urandom of=$dataPath bs=10240 count=1024
+  dd if=/dev/urandom of=$dataPath bs=1024 count=1
   echo '2、生成CAR文件(测试环境需要安装car命令行程序)'
   carDataPath=$(echo ${dataPath/.dat/.car})
   car c --version 1 -f $carDataPath $dataPath
@@ -372,7 +372,7 @@ testCases() {
   echo '2、添加对象，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   resp=$($cmdPath put $testDataFileName cs://$bucketName)
   echo '3、获取CID'
   cid=$(echo "$resp" | awk '/CID:/{print $2}')
@@ -388,7 +388,7 @@ testCases() {
   echo '1、添加对象，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   resp=$($cmdPath put $testDataFileName cs://$bucketName)
   echo '2、获取CID'
   cid=$(echo "$resp" | awk '/CID:/{print $2}')
@@ -416,7 +416,7 @@ testCases() {
   echo '2、添加对象，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   $cmdPath put $testDataFileName cs://$bucketName
   execCmd '删除对象' '清空桶' '有文件清空桶' 'gcscmd rm cs://'$bucketName' --force' 'rm cs://'$bucketName' --force' ''
   echo '3、数据清理'
@@ -429,7 +429,7 @@ testCases() {
   echo '1、添加对象，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   $cmdPath put $testDataFileName cs://$bucketName
   # 设置对象名称
   objectName=$testDataFileName
@@ -443,12 +443,12 @@ testCases() {
   echo '1、添加对象1，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   $cmdPath put $testDataFileName cs://$bucketName
   echo '2、添加对象2，5MB'
   testDataFileName2="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName2 bs=5120 count=1024
+  dd if=/dev/urandom of=$testDataFileName2 bs=512 count=1
   $cmdPath put $testDataFileName2 cs://$bucketName
   # 设置对象名称
   objectName="testdata"
@@ -479,7 +479,7 @@ testCases() {
   echo '1、添加对象，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   resp=$($cmdPath put $testDataFileName cs://$bucketName)
   echo '2、获取CID'
   cid=$(echo "$resp" | awk '/CID:/{print $2}')
@@ -494,7 +494,7 @@ testCases() {
   echo '1、添加对象，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   $cmdPath put $testDataFileName cs://$bucketName
   echo '2、复制对象，10MB'
   testDataFileName2="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
@@ -524,7 +524,7 @@ testCases() {
   echo '2、添加对象，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   $cmdPath put $testDataFileName cs://$bucketName
   # 设置对象名称
   objectName=$testDataFileName
@@ -541,12 +541,12 @@ testCases() {
   echo '1、添加对象1，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   $cmdPath put $testDataFileName cs://$bucketName
   echo '2、添加对象2，5MB'
   testDataFileName2="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName2 bs=5120 count=1024
+  dd if=/dev/urandom of=$testDataFileName2 bs=512 count=1
   $cmdPath put $testDataFileName2 cs://$bucketName
   # 设置对象名称
   objectName=$testDataFileName
@@ -564,7 +564,7 @@ testCases() {
   echo '1、添加对象，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   resp=$($cmdPath put $testDataFileName cs://$bucketName)
   echo '2、获取CID'
   cid=$(echo "$resp" | awk '/CID:/{print $2}')
@@ -581,7 +581,7 @@ testCases() {
   echo '1、添加对象，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
-  dd if=/dev/urandom of=$testDataFileName bs=10240 count=1024
+  dd if=/dev/urandom of=$testDataFileName bs=1024 count=1
   $cmdPath put $testDataFileName cs://$bucketName
   echo '2、复制对象，10MB'
   testDataFileName2="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
