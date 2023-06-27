@@ -94,6 +94,33 @@ testCases() {
   echo ''
 }
 
+execCmd() {
+  testModule=$1
+  testFunction=$2
+  testCase=$3
+  testDescription=$4
+  testCmd=$5
+  testExpectation=$6
+  testFail=$7
+
+  #  echo $testModule"=>"$testFunction"=>"$testCase"=>"$testDescription
+  cmdStr=$cmdPath' '$testCmd
+  echo 'executing '$cmdStr
+  eval $cmdStr
+
+  exitCode=$?
+  echo ''
+  if [ $exitCode -eq 0 ]; then
+    echo -e "\033[32mSuccess: $cmdStr test pass. \033[0m"
+  else
+    echo -e "\033[31mFailure: $cmdStr test fail. \033[0m"
+    estatus=$(($etatus + 1))
+  fi
+
+  echo "exitcode:"$exitCode
+  echo ""
+}
+
 execCmdFail() {
   testModule=$1
   testFunction=$2

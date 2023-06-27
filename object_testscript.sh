@@ -39,7 +39,7 @@ testCases() {
   execCmd '对象操作' '查看对象' '桶内对应 cid 查询-cid正确' 'gcscmd ls cs://'$bucketName' --cid '$cid 'ls cs://'$bucketName' --cid '$cid ''
   echo '4、数据清理'
   rm -rf $testDataFileName
-  echo '对象操作 => 查看对象 => 桶内对应 cid 查询-cid正确 => gcscmd ls cs://bbb --cid QmWgnG7pPjG31w328hZyALQ2BgW5aQrZyKpT47jVpn8CNo start'
+  echo '对象操作 => 查看对象 => 桶内对应 cid 查询-cid正确 => gcscmd ls cs://bbb --cid QmWgnG7pPjG31w328hZyALQ2BgW5aQrZyKpT47jVpn8CNo end'
   echo ''
 
   echo '对象操作 => 查看对象 => 桶内对象名查询-对象名正确 => gcscmd ls cs://bbb --name Tarkov.mp4 start'
@@ -55,6 +55,33 @@ testCases() {
 
   echo "_/_/_/_/_/_/_/_/_/_/_/_/_/ 对象操作 结束 _/_/_/_/_/_/_/_/_/_/_/_/_/"
   echo ''
+}
+
+execCmd() {
+  testModule=$1
+  testFunction=$2
+  testCase=$3
+  testDescription=$4
+  testCmd=$5
+  testExpectation=$6
+  testFail=$7
+
+  #  echo $testModule"=>"$testFunction"=>"$testCase"=>"$testDescription
+  cmdStr=$cmdPath' '$testCmd
+  echo 'executing '$cmdStr
+  eval $cmdStr
+
+  exitCode=$?
+  echo ''
+  if [ $exitCode -eq 0 ]; then
+    echo -e "\033[32mSuccess: $cmdStr test pass. \033[0m"
+  else
+    echo -e "\033[31mFailure: $cmdStr test fail. \033[0m"
+    estatus=$(($etatus + 1))
+  fi
+
+  echo "exitcode:"$exitCode
+  echo ""
 }
 
 execCmdFail() {
