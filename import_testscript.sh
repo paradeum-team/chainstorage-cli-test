@@ -25,6 +25,7 @@ testCases() {
   echo '4、数据清理'
   rm -rf $testDataFileName
   rm -rf $dataPath
+  echo '导入 car 文件 => 正确导入car文件 => 当前目录导入 => gcscmd import ./aaa.car cs://bbb end'
   echo ''
 
   echo '导入 car 文件 => 正确导入car文件 => 绝对路径导入 => gcscmd import /home/pz/aaa.car cs://bbb start'
@@ -42,6 +43,7 @@ testCases() {
   echo '3、数据清理'
   rm -rf $dataPath
   rm -rf $carDataPath
+  echo '导入 car 文件 => 正确导入car文件 => 绝对路径导入 => gcscmd import /home/pz/aaa.car cs://bbb end'
   echo ''
 
   echo '导入 car 文件 => 正确导入car文件 => 相对路径 => gcscmd import ../pz/aaa.car cs://bbb start'
@@ -59,6 +61,7 @@ testCases() {
   echo '3、数据清理'
   rm -rf $dataPath
   rm -rf $carDataPath
+  echo '导入 car 文件 => 正确导入car文件 => 相对路径 => gcscmd import ../pz/aaa.car cs://bbb end'
   echo ''
 
   echo '导入car文件测试数据清理'
@@ -66,6 +69,33 @@ testCases() {
   #  rm -rf $testDataFileName
   echo "_/_/_/_/_/_/_/_/_/_/_/_/_/ 导入car文件 结束 _/_/_/_/_/_/_/_/_/_/_/_/_/"
   echo ''
+}
+
+execCmd() {
+  testModule=$1
+  testFunction=$2
+  testCase=$3
+  testDescription=$4
+  testCmd=$5
+  testExpectation=$6
+  testFail=$7
+
+  #  echo $testModule"=>"$testFunction"=>"$testCase"=>"$testDescription
+  cmdStr=$cmdPath' '$testCmd
+  echo 'executing '$cmdStr
+  eval $cmdStr
+
+  exitCode=$?
+  echo ''
+  if [ $exitCode -eq 0 ]; then
+    echo -e "\033[32mSuccess: $cmdStr test pass. \033[0m"
+  else
+    echo -e "\033[31mFailure: $cmdStr test fail. \033[0m"
+    estatus=$(($etatus + 1))
+  fi
+
+  echo "exitcode:"$exitCode
+  echo ""
 }
 
 execCmdFail() {

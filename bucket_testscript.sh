@@ -80,7 +80,8 @@ testCases() {
   #echo $testDataFileName
   dd if=/dev/urandom of=$testDataFileName bs=1024 count=1024
   $cmdPath put $testDataFileName cs://$bucketName
-  execCmd '桶操作' '清空桶' '正常清空-有数据清空' 'gcscmd rm cs://'$bucketName 'rm cs://'$bucketName ''
+  echo '此操作应给出错误提示'
+  execCmdFail '桶操作' '清空桶' '正常清空-有数据清空' 'gcscmd rm cs://'$bucketName 'rm cs://'$bucketName ''
   echo '桶操作 => 清空桶 => 正常清空-有数据清空 => gcscmd rm cs://bbb end'
   echo ''
 

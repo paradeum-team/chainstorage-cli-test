@@ -61,15 +61,15 @@ testCases() {
   # 不考虑空目录的情况，若上传空目录会报错：Uploading folder is empty, or uploading data is invalid in the folder
   #  echo '删除对象 => 使用对象名删除单目录 => 正确删除-目录中无文件 => gcscmd rm cs://bbb --name aaa start'
   #  echo '1、添加对象'
-  #  testDataFolderame="testfolder_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM
-  #  #echo $testDataFolderame
-  #  mkdir $testDataFolderame
-  #  $cmdPath put $testDataFolderame cs://$bucketName
+  #  testDataFolderName="testfolder_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM
+  #  #echo $testDataFolderName
+  #  mkdir $testDataFolderName
+  #  $cmdPath put $testDataFolderName cs://$bucketName
   #  # 设置对象名称
-  #  objectName=$testDataFolderame
+  #  objectName=$testDataFolderName
   #  execCmd '删除对象' '使用对象名删除单目录' '正确删除-目录中无文件' 'gcscmd rm cs://'$bucketName' --name '$objectName 'rm cs://'$bucketName' --name '$objectName ''
   #  echo '2、数据清理'
-  #  rm -rf $testDataFolderame
+  #  rm -rf $testDataFolderName
   #  echo '删除对象 => 使用对象名删除单目录 => 正确删除-目录中无文件 => gcscmd rm cs://bbb --name aaa end'
   #  echo ''
 
@@ -113,6 +113,33 @@ testCases() {
   $cmdPath rb cs://$bucketName --force
   echo "_/_/_/_/_/_/_/_/_/_/_/_/_/ 删除对象 结束 _/_/_/_/_/_/_/_/_/_/_/_/_/"
   echo ''
+}
+
+execCmd() {
+  testModule=$1
+  testFunction=$2
+  testCase=$3
+  testDescription=$4
+  testCmd=$5
+  testExpectation=$6
+  testFail=$7
+
+  #  echo $testModule"=>"$testFunction"=>"$testCase"=>"$testDescription
+  cmdStr=$cmdPath' '$testCmd
+  echo 'executing '$cmdStr
+  eval $cmdStr
+
+  exitCode=$?
+  echo ''
+  if [ $exitCode -eq 0 ]; then
+    echo -e "\033[32mSuccess: $cmdStr test pass. \033[0m"
+  else
+    echo -e "\033[31mFailure: $cmdStr test fail. \033[0m"
+    estatus=$(($etatus + 1))
+  fi
+
+  echo "exitcode:"$exitCode
+  echo ""
 }
 
 execCmdFail() {

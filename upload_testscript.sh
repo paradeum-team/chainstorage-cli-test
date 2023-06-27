@@ -72,33 +72,35 @@ testCases() {
   #  echo '对象上传 => 上传目录 => 正确上传目录-空目录上传 => gcscmd put ./aaaa cs://bbb start'
   #  echo '数据准备'
   #  # 1、添加目录
-  #  testDataFolderame="testfolder_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM
-  #  #echo $testDataFolderame
-  #  mkdir $testDataFolderame
-  #  $cmdPath put $testDataFolderame cs://$bucketName
+  #  testDataFolderName="testfolder_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM
+  #  #echo $testDataFolderName
+  #  mkdir $testDataFolderName
+  #  $cmdPath put $testDataFolderName cs://$bucketName
   #  # 设置对象名称
-  #  dataPath=''$testDataFolderame
+  #  dataPath=''$testDataFolderName
   #  execCmdFail '对象上传' '上传文件-当前目录' '正确上传目录-空目录上传' 'gcscmd put '$dataPath' cs://'$bucketName 'put '$dataPath' cs://'$bucketName ''
   #  echo '2、数据清理'
   #  rm -rf $dataPath
+  #  echo '对象上传 => 上传目录 => 正确上传目录-空目录上传 => gcscmd put ./aaaa cs://bbb end'
   #  echo ''
 
   echo '对象上传 => 上传目录 => 正确上传目录-目录有文件上传 => gcscmd put ./aaaa cs://bbb start'
   echo '数据准备'
   # 1、添加目录
-  testDataFolderame="testfolder_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM
-  #echo $testDataFolderame
-  mkdir $testDataFolderame
-  $cmdPath put $testDataFolderame cs://$bucketName
+  testDataFolderName="testfolder_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM
+  #echo $testDataFolderName
+  mkdir $testDataFolderName
+  #  $cmdPath put $testDataFolderName cs://$bucketName
   echo '2、添加对象，10MB'
   testDataFileName="testdata_"$(date "+%Y%m%d%H%M%S")"-"$RANDOM".dat"
   #echo $testDataFileName
   # 设置相对路径
-  dataPath=$testDataFolderame'/'$testDataFileName
+  dataPath=$testDataFolderName'/'$testDataFileName
   dd if=/dev/urandom of=$dataPath bs=10240 count=1024
-  execCmd '对象上传' '上传文件-当前目录' '正确上传目录-目录有文件上传' 'gcscmd put '$testDataFolderame' cs://'$bucketName 'put '$testDataFolderame' cs://'$bucketName ''
+  execCmd '对象上传' '上传文件-当前目录' '正确上传目录-目录有文件上传' 'gcscmd put '$testDataFolderName' cs://'$bucketName 'put '$testDataFolderName' cs://'$bucketName ''
   echo '3、数据清理'
-  rm -rf $testDataFolderame
+  rm -rf $testDataFolderName
+  echo '对象上传 => 上传目录 => 正确上传目录-目录有文件上传 => gcscmd put ./aaaa cs://bbb end'
   echo ''
 
   # 目前暂时不使用--carfile参数
@@ -126,6 +128,33 @@ testCases() {
   #  rm -rf $testDataFileName
   echo "_/_/_/_/_/_/_/_/_/_/_/_/_/ 对象上传 结束 _/_/_/_/_/_/_/_/_/_/_/_/_/"
   echo ''
+}
+
+execCmd() {
+  testModule=$1
+  testFunction=$2
+  testCase=$3
+  testDescription=$4
+  testCmd=$5
+  testExpectation=$6
+  testFail=$7
+
+  #  echo $testModule"=>"$testFunction"=>"$testCase"=>"$testDescription
+  cmdStr=$cmdPath' '$testCmd
+  echo 'executing '$cmdStr
+  eval $cmdStr
+
+  exitCode=$?
+  echo ''
+  if [ $exitCode -eq 0 ]; then
+    echo -e "\033[32mSuccess: $cmdStr test pass. \033[0m"
+  else
+    echo -e "\033[31mFailure: $cmdStr test fail. \033[0m"
+    estatus=$(($etatus + 1))
+  fi
+
+  echo "exitcode:"$exitCode
+  echo ""
 }
 
 execCmdFail() {
